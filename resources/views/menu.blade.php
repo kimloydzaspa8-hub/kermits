@@ -504,6 +504,7 @@
 	                    return;
 	                }
 
+					
 	                db.menuCategories = [...new Set([...(Array.isArray(db.menuCategories) ? db.menuCategories : []), type])];
 	                saveMenuCategories();
 
