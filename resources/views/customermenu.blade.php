@@ -34,7 +34,7 @@
             from { opacity: 0; transform: scale(0.94); }
             to { opacity: 1; transform: scale(1); }
         }
-		
+
 	        .card { background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(75,58,50,0.08); }
 	        .btn-secondary { background-color: #F8BBD0; color: #5D4037; padding: 8px 12px; border-radius: 6px; font-weight: 800; text-align: center; font-size: 0.88rem; transition: background-color 0.2s ease, transform 0.2s ease; }
         .btn-secondary:hover { background-color: #F48FB1; transform: translateY(-1px); }
@@ -213,6 +213,7 @@
 	        </section>
 	    </main>
 
+		
     <div id="item-preview" class="item-preview" onclick="closeItemPreview(event)">
         <button type="button" class="item-preview-close" onclick="closeItemPreview(event)" aria-label="Close item preview">
             <i class="fas fa-times"></i>
