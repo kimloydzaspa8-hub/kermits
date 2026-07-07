@@ -19,6 +19,10 @@
             "App\\": "app/",
             "Database\\Seeders\\": "database/seeders/"
         }
+        ,
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
