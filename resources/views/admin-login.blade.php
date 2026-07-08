@@ -86,13 +86,9 @@
         const ADMIN_DASHBOARD_URL = "{{ route('admin.dashboard') }}";
 	        const ADMIN_LOGIN_URL = "{{ route('admin.login.submit') }}";
 	        const CASHIER_LOGIN_PAGE_URL = "{{ route('cashier.login') }}";
-	        const RIDER_LOGIN_PAGE_URL = "{{ route('rider.login') }}";
-        const CSRF_TOKEN = "{{ csrf_token() }}";
 
-	        function changeStaffLoginRole(role) {
 	            if(role === 'cashier') window.location.href = CASHIER_LOGIN_PAGE_URL;
-	            if(role === 'rider') window.location.href = RIDER_LOGIN_PAGE_URL;
-	        }
+
 
 	        function showAdminAlert(icon, title, text = '') {
             if(window.Swal) {

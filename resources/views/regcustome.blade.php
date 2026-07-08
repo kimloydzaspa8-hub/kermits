@@ -488,26 +488,38 @@
         </section>
 
         <section class="form-panel" aria-label="Customer account form">
-            <form id="customer-account-form" class="register-card" method="GET" action="{{ route('customer.home') }}">
+            <form id="customer-account-form" class="register-card" method="POST" action="{{ route('customer.register.submit') }}">
+                @csrf
                 <h2>
                     <span id="registration-check" class="title-check" aria-hidden="true"><i class="fas fa-check"></i></span>
                     <span id="form-title">Create account</span>
                 </h2>
                 <p id="form-subtitle" class="subtitle">Register as a Kermit's Restaurant customer</p>
 
+                @if ($errors->any())
+                    <div class="form-errors" style="margin-bottom:1rem;padding:1rem;border:1px solid #f87171;background:#fef2f2;color:#991b1b;border-radius:.5rem;">
+                        <strong>There were some problems with your input.</strong>
+                        <ul style="margin:.5rem 0 0;padding-left:1.25rem;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="form-row register-only">
                     <div class="field-group">
                         <label for="first_name">First Name</label>
                         <div class="input-wrap">
                             <i class="fas fa-user"></i>
-                            <input id="first_name" name="first_name" type="text" placeholder="Juan" required>
+                            <input id="first_name" name="first_name" type="text" placeholder="Juan" value="{{ old('first_name') }}" required>
                         </div>
                     </div>
                     <div class="field-group">
                         <label for="last_name">Last Name</label>
                         <div class="input-wrap">
                             <i class="fas fa-user"></i>
-                            <input id="last_name" name="last_name" type="text" placeholder="Dela Cruz" required>
+                            <input id="last_name" name="last_name" type="text" placeholder="Dela Cruz" value="{{ old('last_name') }}" required>
                         </div>
                     </div>
                 </div>
@@ -516,7 +528,7 @@
                     <label for="email">Email</label>
                     <div class="input-wrap">
                         <i class="fas fa-envelope"></i>
-                        <input id="email" name="email" type="email" placeholder="name@example.com" required>
+                        <input id="email" name="email" type="email" placeholder="name@gmail.com" value="{{ old('email') }}" required>
                     </div>
                 </div>
 
@@ -524,15 +536,11 @@
                     <label for="phone">Phone Number</label>
                     <div class="input-wrap">
                         <i class="fas fa-phone"></i>
-                        <input id="phone" name="phone" type="tel" placeholder="09XX XXX XXXX" required>
-                    </div>
-                </div>
-
-                <div class="field-group register-only">
+                            <input id="phone" name="phone" type="tel" inputmode="numeric" maxlength="11" placeholder="09XXXXXXXXX" value="{{ old('phone') }}" required>
                     <label for="address">Delivery Address</label>
                     <div class="input-wrap">
                         <i class="fas fa-map-marker-alt"></i>
-                        <input id="address" name="address" type="text" placeholder="Street, barangay, city" required>
+                        <input id="address" name="address" type="text" placeholder="Street, barangay, city" value="{{ old('address') }}" required>
                     </div>
                 </div>
 
@@ -577,13 +585,28 @@
         const registerOnlyFields = document.querySelectorAll('.register-only');
         const passwordConfirmation = document.getElementById('password_confirmation');
         const passwordConfirmationLabel = document.getElementById('password-confirmation-label');
+        const loginAction = "{{ route('customer.home') }}";
+        const registerAction = "{{ route('customer.register.submit') }}";
+
+        accountForm.action = registerAction;
         let isLoginMode = false;
+        const phoneInput = document.getElementById('phone');
 
         const setFieldRequirement = (selector, required) => {
             document.querySelectorAll(selector).forEach((field) => {
                 field.required = required;
             });
         };
+
+        phoneInput.addEventListener('input', () => {
+            let digits = phoneInput.value.replace(/\D/g, '');
+            if (digits.length > 11) {
+                digits = digits.slice(0, 11);
+            }
+            if (phoneInput.value !== digits) {
+                phoneInput.value = digits;
+            }
+        });
 
         const showLogin = () => {
             isLoginMode = true;
@@ -599,6 +622,7 @@
             passwordConfirmationLabel.textContent = 'Confirm';
             setFieldRequirement('.register-only input', false);
             passwordConfirmation.required = false;
+            accountForm.action = loginAction;
         };
 
         const showRegister = () => {
@@ -614,6 +638,7 @@
             passwordConfirmation.parentElement.parentElement.classList.remove('mode-hidden');
             setFieldRequirement('.register-only input', true);
             passwordConfirmation.required = true;
+            accountForm.action = registerAction;
         };
 
         document.getElementById('show-login').addEventListener('click', (event) => {
@@ -629,11 +654,10 @@
         accountForm.addEventListener('submit', (event) => {
             if (isLoginMode) {
                 event.preventDefault();
-                window.location.href = accountForm.action;
+                window.location.href = loginAction;
                 return;
             }
 
-            event.preventDefault();
             accountForm.classList.add('show-check');
         });
     </script>

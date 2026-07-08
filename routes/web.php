@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CashierPosController;
+use App\Http\Controllers\CustomerAccountController;
 use App\Http\Controllers\StaffAccountController;
 
 Route::get('/index.php/{path?}', function (?string $path = null) {
@@ -12,22 +13,19 @@ Route::view('/', 'regcustome')->name('home');
 Route::view('/home', 'home')->name('customer.home');
 Route::view('/track-order', 'track-order')->name('track.order');
 Route::redirect('/customer/register', '/', 301)->name('customer.register');
+Route::post('/customer/register', [CustomerAccountController::class, 'register'])->name('customer.register.submit');
 Route::view('/customer/menu', 'customermenu')->name('customer.menu');
 Route::view('/admin/login', 'admin-login')->name('admin.login');
 Route::view('/cashier/login', 'cashier-login')->name('cashier.login');
-Route::view('/rider/login', 'admin-login')->name('rider.login');
 Route::post('/admin/login', [StaffAccountController::class, 'loginAdmin'])->name('admin.login.submit');
 Route::post('/cashier/login', [StaffAccountController::class, 'loginCashier'])->name('cashier.login.submit');
-Route::post('/rider/login', [StaffAccountController::class, 'loginRider'])->name('rider.login.submit');
 Route::redirect('/admin', '/admin/dashboard')->name('admin');
 Route::view('/admin/dashboard', 'admin', ['view' => 'dashboard'])->name('admin.dashboard');
 Route::view('/admin/orders', 'admin', ['view' => 'allorders'])->name('admin.orders');
 Route::view('/admin/menu', 'admin', ['view' => 'menu'])->name('admin.menu');
 Route::view('/admin/inventory', 'admin', ['view' => 'inventory'])->name('admin.inventory');
 Route::view('/admin/staff', 'admin', ['view' => 'staff'])->name('admin.staff');
-Route::redirect('/admin/riders', '/admin/staff')->name('admin.riders');
 Route::view('/cashier-pos', 'cashier-pos')->name('cashier.pos');
-Route::view('/rider/portal', 'rider-portal')->name('rider.portal');
 Route::get('/cashier-pos/data', [CashierPosController::class, 'data'])->name('cashier.pos.data');
 Route::post('/cashier-pos/data', [CashierPosController::class, 'save'])->name('cashier.pos.save');
 Route::post('/cashier-pos/menu-photo', [CashierPosController::class, 'storeMenuPhoto'])->name('cashier.pos.menu-photo');

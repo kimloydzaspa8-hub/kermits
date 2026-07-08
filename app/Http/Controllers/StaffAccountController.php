@@ -21,11 +21,6 @@ class StaffAccountController
         return $this->login($request, ['Cashier', 'Staff']);
     }
 
-    public function loginRider(Request $request): JsonResponse
-    {
-        return $this->login($request, ['Rider']);
-    }
-
     public function index(): JsonResponse
     {
         return response()->json(
@@ -43,7 +38,7 @@ class StaffAccountController
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:staff_accounts,email'],
             'password' => ['required', 'string', 'min:1'],
-            'role' => ['required', Rule::in(['Admin', 'Cashier', 'Staff', 'Rider'])],
+            'role' => ['required', Rule::in(['Admin', 'Cashier', 'Staff'])],
             'area' => ['nullable', 'string', 'max:120'],
         ]);
 
@@ -76,7 +71,7 @@ class StaffAccountController
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('staff_accounts', 'email')->ignore($id)],
             'password' => ['nullable', 'string', 'min:1'],
-            'role' => ['required', Rule::in(['Admin', 'Cashier', 'Staff', 'Rider'])],
+            'role' => ['required', Rule::in(['Admin', 'Cashier', 'Staff'])],
             'area' => ['nullable', 'string', 'max:120'],
         ]);
 
